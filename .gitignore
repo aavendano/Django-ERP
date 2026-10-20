@@ -61,3 +61,4 @@ Thumbs.db
 celerybeat-schedule
 celerybeat.pid
 *.pid
+db.sqlite3
