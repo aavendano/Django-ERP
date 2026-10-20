@@ -1,17 +1,117 @@
-{%extends 'base.html'%}
-{%block title%}Purchase Order Form{%endblock%}
-{%block content%}
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}New{% endif %} Purchase Order{% endblock %}
+{% block content %}
 <div class="page-header">
-    <h1>Purchase Order Form</h1>
+    <h1>
+        <i class="fas fa-file-invoice me-2"></i>
+        {% if form.instance.pk %}Edit{% else %}New{% endif %} Purchase Order
+    </h1>
 </div>
+
 <div class="card">
     <div class="card-body">
-        <form method="post">
-            {%csrf_token%}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
-            <a href="{%url 'purchasing:purchase_order_list'%}" class="btn btn-secondary">Cancel</a>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Order details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.po_number.id_for_label }}">{{ form.po_number.label }}</label>
+                    {{ form.po_number }}
+                    {% if form.po_number.errors %}<div class="invalid-feedback d-block">{{ form.po_number.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.supplier.id_for_label }}">{{ form.supplier.label }}</label>
+                    {{ form.supplier }}
+                    {% if form.supplier.errors %}<div class="invalid-feedback d-block">{{ form.supplier.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.requisition.id_for_label }}">{{ form.requisition.label }}</label>
+                    {{ form.requisition }}
+                    {% if form.requisition.errors %}<div class="invalid-feedback d-block">{{ form.requisition.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.po_date.id_for_label }}">{{ form.po_date.label }}</label>
+                    {{ form.po_date }}
+                    {% if form.po_date.errors %}<div class="invalid-feedback d-block">{{ form.po_date.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.expected_delivery_date.id_for_label }}">{{ form.expected_delivery_date.label }}</label>
+                    {{ form.expected_delivery_date }}
+                    {% if form.expected_delivery_date.errors %}<div class="invalid-feedback d-block">{{ form.expected_delivery_date.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.created_by.id_for_label }}">{{ form.created_by.label }}</label>
+                    {{ form.created_by }}
+                    {% if form.created_by.errors %}<div class="invalid-feedback d-block">{{ form.created_by.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Delivery</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.delivery_address.id_for_label }}">{{ form.delivery_address.label }}</label>
+                    {{ form.delivery_address }}
+                    {% if form.delivery_address.errors %}<div class="invalid-feedback d-block">{{ form.delivery_address.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.delivery_contact.id_for_label }}">{{ form.delivery_contact.label }}</label>
+                    {{ form.delivery_contact }}
+                    {% if form.delivery_contact.errors %}<div class="invalid-feedback d-block">{{ form.delivery_contact.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.delivery_phone.id_for_label }}">{{ form.delivery_phone.label }}</label>
+                    {{ form.delivery_phone }}
+                    {% if form.delivery_phone.errors %}<div class="invalid-feedback d-block">{{ form.delivery_phone.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Payment &amp; notes</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.payment_terms.id_for_label }}">{{ form.payment_terms.label }}</label>
+                    {{ form.payment_terms }}
+                    {% if form.payment_terms.errors %}<div class="invalid-feedback d-block">{{ form.payment_terms.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                    {{ form.notes }}
+                    {% if form.notes.help_text %}<div class="form-text">{{ form.notes.help_text }}</div>{% endif %}
+                    {% if form.notes.errors %}<div class="invalid-feedback d-block">{{ form.notes.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.supplier_notes.id_for_label }}">{{ form.supplier_notes.label }}</label>
+                    {{ form.supplier_notes }}
+                    {% if form.supplier_notes.help_text %}<div class="form-text">{{ form.supplier_notes.help_text }}</div>{% endif %}
+                    {% if form.supplier_notes.errors %}<div class="invalid-feedback d-block">{{ form.supplier_notes.errors }}</div>{% endif %}
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.terms_conditions.id_for_label }}">{{ form.terms_conditions.label }}</label>
+                    {{ form.terms_conditions }}
+                    {% if form.terms_conditions.help_text %}<div class="form-text">{{ form.terms_conditions.help_text }}</div>{% endif %}
+                    {% if form.terms_conditions.errors %}<div class="invalid-feedback d-block">{{ form.terms_conditions.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Save
+                </button>
+                <a href="{% url 'purchasing:purchase_order_list' %}" class="btn btn-secondary">
+                    <i class="fas fa-times me-1"></i> Cancel
+                </a>
+            </div>
         </form>
     </div>
 </div>
-{%endblock%}
+{% endblock %}

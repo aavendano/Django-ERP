@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Inspections{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-search me-2"></i>Inspections</h1>
+    <a href="{% url 'quality:inspection_create' %}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> New Inspection</a>
+</div>
+<div class="card mb-3"><div class="card-body">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label" for="search">Search</label>
+            <input class="form-control" id="search" name="search" value="{{ search_query|default:'' }}" placeholder="Number, title, reference">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" for="status">Status</label>
+            <select class="form-select" id="status" name="status">
+                <option value="">All</option>
+                <option value="scheduled" {% if status_filter == 'scheduled' %}selected{% endif %}>Scheduled</option>
+                <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>In Progress</option>
+                <option value="passed" {% if status_filter == 'passed' %}selected{% endif %}>Passed</option>
+                <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>Failed</option>
+                <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-primary" type="submit">Filter</button>
+            <a href="{% url 'quality:inspection_list' %}" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+</div></div>
+<div class="card"><div class="card-body">
+{% if inspections %}
+<div class="table-responsive">
+<table class="table table-hover">
+<thead><tr><th>Number</th><th>Title</th><th>Type</th><th>Scheduled</th><th>Inspector</th><th>Status</th><th>Priority</th><th></th></tr></thead>
+<tbody>
+{% for item in inspections %}
+<tr>
+    <td><a href="{% url 'quality:inspection_detail' item.pk %}">{{ item.inspection_number }}</a></td>
+    <td>{{ item.title }}</td>
+    <td>{{ item.inspection_type }}</td>
+    <td>{{ item.scheduled_date|date:"M d, Y" }}</td>
+    <td>{{ item.inspector|default:"—" }}</td>
+    <td><span class="badge bg-secondary">{{ item.get_status_display }}</span></td>
+    <td>{{ item.get_priority_display }}</td>
+    <td class="text-end">
+        <a href="{% url 'quality:inspection_update' item.pk %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'quality:inspection_delete' item.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="text-center py-5 text-muted"><p>No inspections found</p><a href="{% url 'quality:inspection_create' %}" class="btn btn-primary">Create First Inspection</a></div>
+{% endif %}
+</div></div>
+{% endblock %}

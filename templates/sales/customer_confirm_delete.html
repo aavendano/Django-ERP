@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Delete Customer{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Delete Customer</h1></div>
+<div class="card">
+    <div class="card-body">
+        <p>Are you sure you want to delete <strong>{{ object }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-1"></i> Delete</button>
+            <a href="{% url 'sales:customer_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

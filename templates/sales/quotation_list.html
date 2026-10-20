@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Quotations{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-file-alt me-2"></i>Quotations</h1>
+    <a href="{% url 'sales:quotation_create' %}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Add Quotation</a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label" for="search">Search</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ request.GET.search }}" placeholder="Quote # or customer">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="status">Status</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="">All statuses</option>
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-1"></i> Filter</button>
+                <a href="{% url 'sales:quotation_list' %}" class="btn btn-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if quotations %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Quote #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Valid until</th>
+                        <th>Status</th>
+                        <th class="text-end">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quote in quotations %}
+                    <tr>
+                        <td><a href="{% url 'sales:quotation_detail' quote.pk %}">{{ quote.quotation_number }}</a></td>
+                        <td>{{ quote.customer.name }}</td>
+                        <td>{{ quote.quotation_date|date:"M d, Y" }}</td>
+                        <td>{{ quote.valid_until|date:"M d, Y" }}</td>
+                        <td><span class="badge bg-secondary">{{ quote.get_status_display }}</span></td>
+                        <td class="text-end">${{ quote.total_amount|floatformat:2 }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'sales:quotation_update' quote.pk %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'sales:quotation_delete' quote.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if is_paginated %}
+        <nav>
+            <ul class="pagination mb-0">
+                {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>{% endif %}
+                <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>{% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted">No quotations found</p>
+            <a href="{% url 'sales:quotation_create' %}" class="btn btn-primary">Add First Quotation</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ ncr.ncr_number }}{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-exclamation-triangle me-2"></i>{{ ncr.ncr_number }}</h1>
+    <div class="d-flex gap-2">
+        <a href="{% url 'quality:nonconformance_update' ncr.pk %}" class="btn btn-warning"><i class="fas fa-edit me-1"></i> Edit</a>
+        <a href="{% url 'quality:nonconformance_delete' ncr.pk %}" class="btn btn-danger"><i class="fas fa-trash me-1"></i> Delete</a>
+        <a href="{% url 'quality:nonconformance_list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">NCR details</div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Title</dt><dd class="col-sm-8">{{ ncr.title }}</dd>
+                    <dt class="col-sm-4">Source</dt><dd class="col-sm-8">{{ ncr.get_source_display }}</dd>
+                    <dt class="col-sm-4">Inspection</dt><dd class="col-sm-8">{% if ncr.inspection %}<a href="{% url 'quality:inspection_detail' ncr.inspection.pk %}">{{ ncr.inspection }}</a>{% else %}—{% endif %}</dd>
+                    <dt class="col-sm-4">Severity</dt><dd class="col-sm-8">{{ ncr.get_severity_display }}</dd>
+                    <dt class="col-sm-4">Category</dt><dd class="col-sm-8">{{ ncr.category|default:"—" }}</dd>
+                    <dt class="col-sm-4">Detected</dt><dd class="col-sm-8">{{ ncr.detected_date|date:"M d, Y" }} by {{ ncr.detected_by|default:"—" }}</dd>
+                    <dt class="col-sm-4">Location</dt><dd class="col-sm-8">{{ ncr.location|default:"—" }}</dd>
+                    <dt class="col-sm-4">Assigned</dt><dd class="col-sm-8">{{ ncr.assigned_to|default:"—" }}</dd>
+                    <dt class="col-sm-4">Status</dt><dd class="col-sm-8">{{ ncr.get_status_display }}</dd>
+                    <dt class="col-sm-4">Cost impact</dt><dd class="col-sm-8">${{ ncr.cost_impact|default:0|floatformat:2 }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Description &amp; analysis</div>
+            <div class="card-body">
+                <h6>Description</h6><p>{{ ncr.description }}</p>
+                {% if ncr.immediate_action %}<h6>Immediate action</h6><p>{{ ncr.immediate_action }}</p>{% endif %}
+                {% if ncr.root_cause %}<h6>Root cause</h6><p>{{ ncr.root_cause }}</p>{% endif %}
+                {% if ncr.resolution_notes %}<h6>Resolution</h6><p class="mb-0">{{ ncr.resolution_notes }}</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% if ncr.corrective_actions.all %}
+<div class="card">
+    <div class="card-header">Related CAPAs</div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for capa in ncr.corrective_actions.all %}
+            <li class="list-group-item px-0"><a href="{% url 'quality:capa_detail' capa.pk %}">{{ capa.capa_number }}</a> — {{ capa.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

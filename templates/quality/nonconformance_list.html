@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Non-Conformance Reports{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-exclamation-triangle me-2"></i>Non-Conformance Reports</h1>
+    <a href="{% url 'quality:nonconformance_create' %}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> New NCR</a>
+</div>
+<div class="card mb-3"><div class="card-body">
+<form method="get" class="row g-2 align-items-end">
+    <div class="col-md-4">
+        <label class="form-label" for="search">Search</label>
+        <input class="form-control" id="search" name="search" value="{{ search_query|default:'' }}">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="status">Status</label>
+        <input class="form-control" id="status" name="status" value="{{ status_filter|default:'' }}" placeholder="e.g. reported">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="severity">Severity</label>
+        <select class="form-select" id="severity" name="severity">
+            <option value="">All</option>
+            <option value="minor" {% if severity_filter == 'minor' %}selected{% endif %}>Minor</option>
+            <option value="major" {% if severity_filter == 'major' %}selected{% endif %}>Major</option>
+            <option value="critical" {% if severity_filter == 'critical' %}selected{% endif %}>Critical</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </div>
+</form>
+</div></div>
+<div class="card"><div class="card-body">
+{% if ncrs %}
+<div class="table-responsive">
+<table class="table table-hover">
+<thead><tr><th>NCR #</th><th>Title</th><th>Severity</th><th>Detected</th><th>Status</th><th>Assigned</th><th></th></tr></thead>
+<tbody>
+{% for ncr in ncrs %}
+<tr>
+    <td><a href="{% url 'quality:nonconformance_detail' ncr.pk %}">{{ ncr.ncr_number }}</a></td>
+    <td>{{ ncr.title }}</td>
+    <td><span class="badge bg-{% if ncr.severity == 'critical' %}danger{% elif ncr.severity == 'major' %}warning text-dark{% else %}secondary{% endif %}">{{ ncr.get_severity_display }}</span></td>
+    <td>{{ ncr.detected_date|date:"M d, Y" }}</td>
+    <td>{{ ncr.get_status_display }}</td>
+    <td>{{ ncr.assigned_to|default:"—" }}</td>
+    <td class="text-end">
+        <a href="{% url 'quality:nonconformance_update' ncr.pk %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'quality:nonconformance_delete' ncr.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="text-center py-5 text-muted"><p>No NCRs found</p><a href="{% url 'quality:nonconformance_create' %}" class="btn btn-primary">Create First NCR</a></div>
+{% endif %}
+</div></div>
+{% endblock %}

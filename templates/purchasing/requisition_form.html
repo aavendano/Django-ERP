@@ -1,17 +1,82 @@
-{%extends 'base.html'%}
-{%block title%}Purchase Requisition Form{%endblock%}
-{%block content%}
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}New{% endif %} Purchase Requisition{% endblock %}
+{% block content %}
 <div class="page-header">
-    <h1>Purchase Requisition Form</h1>
+    <h1>
+        <i class="fas fa-clipboard-list me-2"></i>
+        {% if form.instance.pk %}Edit{% else %}New{% endif %} Purchase Requisition
+    </h1>
 </div>
+
 <div class="card">
     <div class="card-body">
-        <form method="post">
-            {%csrf_token%}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
-            <a href="{%url 'purchasing:requisition_list'%}" class="btn btn-secondary">Cancel</a>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Requisition details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.requisition_number.id_for_label }}">{{ form.requisition_number.label }}</label>
+                    {{ form.requisition_number }}
+                    {% if form.requisition_number.errors %}<div class="invalid-feedback d-block">{{ form.requisition_number.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}<div class="invalid-feedback d-block">{{ form.title.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.requested_by.id_for_label }}">{{ form.requested_by.label }}</label>
+                    {{ form.requested_by }}
+                    {% if form.requested_by.errors %}<div class="invalid-feedback d-block">{{ form.requested_by.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.department.id_for_label }}">{{ form.department.label }}</label>
+                    {{ form.department }}
+                    {% if form.department.errors %}<div class="invalid-feedback d-block">{{ form.department.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.priority.id_for_label }}">{{ form.priority.label }}</label>
+                    {{ form.priority }}
+                    {% if form.priority.errors %}<div class="invalid-feedback d-block">{{ form.priority.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.requisition_date.id_for_label }}">{{ form.requisition_date.label }}</label>
+                    {{ form.requisition_date }}
+                    {% if form.requisition_date.errors %}<div class="invalid-feedback d-block">{{ form.requisition_date.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.required_by_date.id_for_label }}">{{ form.required_by_date.label }}</label>
+                    {{ form.required_by_date }}
+                    {% if form.required_by_date.errors %}<div class="invalid-feedback d-block">{{ form.required_by_date.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Purpose &amp; notes</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.purpose.id_for_label }}">{{ form.purpose.label }}</label>
+                    {{ form.purpose }}
+                    {% if form.purpose.errors %}<div class="invalid-feedback d-block">{{ form.purpose.errors }}</div>{% endif %}
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}<div class="invalid-feedback d-block">{{ form.notes.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Save</button>
+                <a href="{% url 'purchasing:requisition_list' %}" class="btn btn-secondary"><i class="fas fa-times me-1"></i> Cancel</a>
+            </div>
         </form>
     </div>
 </div>
-{%endblock%}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Delete CAPA{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Delete Corrective Action</h1></div>
+<div class="card"><div class="card-body">
+    <p>Are you sure you want to delete <strong>{{ capa }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-1"></i> Delete</button>
+        <a href="{% url 'quality:capa_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div></div>
+{% endblock %}

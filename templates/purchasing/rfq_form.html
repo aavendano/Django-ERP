@@ -1,17 +1,82 @@
-{%extends 'base.html'%}
-{%block title%}RFQ Form{%endblock%}
-{%block content%}
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}New{% endif %} RFQ{% endblock %}
+{% block content %}
 <div class="page-header">
-    <h1>RFQ Form</h1>
+    <h1>
+        <i class="fas fa-file-alt me-2"></i>
+        {% if form.instance.pk %}Edit{% else %}New{% endif %} RFQ
+    </h1>
 </div>
+
 <div class="card">
     <div class="card-body">
-        <form method="post">
-            {%csrf_token%}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
-            <a href="{%url 'purchasing:rfq_list'%}" class="btn btn-secondary">Cancel</a>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">RFQ details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.rfq_number.id_for_label }}">{{ form.rfq_number.label }}</label>
+                    {{ form.rfq_number }}
+                    {% if form.rfq_number.errors %}<div class="invalid-feedback d-block">{{ form.rfq_number.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}<div class="invalid-feedback d-block">{{ form.title.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.requisition.id_for_label }}">{{ form.requisition.label }}</label>
+                    {{ form.requisition }}
+                    {% if form.requisition.errors %}<div class="invalid-feedback d-block">{{ form.requisition.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.rfq_date.id_for_label }}">{{ form.rfq_date.label }}</label>
+                    {{ form.rfq_date }}
+                    {% if form.rfq_date.errors %}<div class="invalid-feedback d-block">{{ form.rfq_date.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.submission_deadline.id_for_label }}">{{ form.submission_deadline.label }}</label>
+                    {{ form.submission_deadline }}
+                    {% if form.submission_deadline.errors %}<div class="invalid-feedback d-block">{{ form.submission_deadline.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.created_by.id_for_label }}">{{ form.created_by.label }}</label>
+                    {{ form.created_by }}
+                    {% if form.created_by.errors %}<div class="invalid-feedback d-block">{{ form.created_by.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Description &amp; terms</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}<div class="invalid-feedback d-block">{{ form.description.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.terms_conditions.id_for_label }}">{{ form.terms_conditions.label }}</label>
+                    {{ form.terms_conditions }}
+                    {% if form.terms_conditions.errors %}<div class="invalid-feedback d-block">{{ form.terms_conditions.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}<div class="invalid-feedback d-block">{{ form.notes.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Save</button>
+                <a href="{% url 'purchasing:rfq_list' %}" class="btn btn-secondary"><i class="fas fa-times me-1"></i> Cancel</a>
+            </div>
         </form>
     </div>
 </div>
-{%endblock%}
+{% endblock %}

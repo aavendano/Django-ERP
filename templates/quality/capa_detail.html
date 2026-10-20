@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ capa.capa_number }}{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-tasks me-2"></i>{{ capa.capa_number }}</h1>
+    <div class="d-flex gap-2">
+        <a href="{% url 'quality:capa_update' capa.pk %}" class="btn btn-warning"><i class="fas fa-edit me-1"></i> Edit</a>
+        <a href="{% url 'quality:capa_delete' capa.pk %}" class="btn btn-danger"><i class="fas fa-trash me-1"></i> Delete</a>
+        <a href="{% url 'quality:capa_list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">CAPA details</div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Title</dt><dd class="col-sm-8">{{ capa.title }}</dd>
+                    <dt class="col-sm-4">Type</dt><dd class="col-sm-8">{{ capa.get_action_type_display }}</dd>
+                    <dt class="col-sm-4">NCR</dt><dd class="col-sm-8">{% if capa.non_conformance %}<a href="{% url 'quality:nonconformance_detail' capa.non_conformance.pk %}">{{ capa.non_conformance }}</a>{% else %}—{% endif %}</dd>
+                    <dt class="col-sm-4">Owner</dt><dd class="col-sm-8">{{ capa.responsible_person|default:"—" }}</dd>
+                    <dt class="col-sm-4">Target date</dt><dd class="col-sm-8">{{ capa.target_date|date:"M d, Y" }}</dd>
+                    <dt class="col-sm-4">Status</dt><dd class="col-sm-8">{{ capa.get_status_display }}</dd>
+                    <dt class="col-sm-4">Priority</dt><dd class="col-sm-8">{{ capa.get_priority_display }}</dd>
+                    <dt class="col-sm-4">Est. cost</dt><dd class="col-sm-8">{% if capa.estimated_cost %}${% endif %}{{ capa.estimated_cost|default:"—" }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Analysis &amp; plan</div>
+            <div class="card-body">
+                <h6>Source</h6><p>{{ capa.source_description }}</p>
+                <h6>Root cause</h6><p>{{ capa.root_cause }}</p>
+                {% if capa.why_analysis %}<h6>Why analysis</h6><p>{{ capa.why_analysis }}</p>{% endif %}
+                <h6>Proposed action</h6><p>{{ capa.proposed_action }}</p>
+                <h6>Expected outcome</h6><p class="mb-0">{{ capa.expected_outcome }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% if capa.implementation_plan or capa.required_resources or capa.verification_method %}
+<div class="card">
+    <div class="card-header">Implementation</div>
+    <div class="card-body">
+        {% if capa.implementation_plan %}<h6>Plan</h6><p>{{ capa.implementation_plan }}</p>{% endif %}
+        {% if capa.required_resources %}<h6>Resources</h6><p>{{ capa.required_resources }}</p>{% endif %}
+        {% if capa.verification_method %}<h6>Verification</h6><p class="mb-0">{{ capa.verification_method }}</p>{% endif %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

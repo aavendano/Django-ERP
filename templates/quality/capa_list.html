@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Corrective Actions (CAPA){% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-tasks me-2"></i>Corrective Actions (CAPA)</h1>
+    <a href="{% url 'quality:capa_create' %}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> New CAPA</a>
+</div>
+<div class="card mb-3"><div class="card-body">
+<form method="get" class="row g-2 align-items-end">
+    <div class="col-md-4">
+        <label class="form-label" for="search">Search</label>
+        <input class="form-control" id="search" name="search" value="{{ search_query|default:'' }}">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="status">Status</label>
+        <input class="form-control" id="status" name="status" value="{{ status_filter|default:'' }}" placeholder="e.g. in_progress">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="type">Type</label>
+        <select class="form-select" id="type" name="type">
+            <option value="">All</option>
+            <option value="corrective" {% if type_filter == 'corrective' %}selected{% endif %}>Corrective</option>
+            <option value="preventive" {% if type_filter == 'preventive' %}selected{% endif %}>Preventive</option>
+            <option value="both" {% if type_filter == 'both' %}selected{% endif %}>Both</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </div>
+</form>
+</div></div>
+<div class="card"><div class="card-body">
+{% if capas %}
+<div class="table-responsive">
+<table class="table table-hover">
+<thead><tr><th>CAPA #</th><th>Title</th><th>Type</th><th>Target</th><th>Owner</th><th>Status</th><th>Priority</th><th></th></tr></thead>
+<tbody>
+{% for capa in capas %}
+<tr>
+    <td><a href="{% url 'quality:capa_detail' capa.pk %}">{{ capa.capa_number }}</a></td>
+    <td>{{ capa.title }}</td>
+    <td>{{ capa.get_action_type_display }}</td>
+    <td>{{ capa.target_date|date:"M d, Y" }}</td>
+    <td>{{ capa.responsible_person|default:"—" }}</td>
+    <td><span class="badge bg-secondary">{{ capa.get_status_display }}</span></td>
+    <td>{{ capa.get_priority_display }}</td>
+    <td class="text-end">
+        <a href="{% url 'quality:capa_update' capa.pk %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'quality:capa_delete' capa.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="text-center py-5 text-muted"><p>No CAPAs found</p><a href="{% url 'quality:capa_create' %}" class="btn btn-primary">Create First CAPA</a></div>
+{% endif %}
+</div></div>
+{% endblock %}

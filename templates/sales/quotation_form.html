@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}New{% endif %} Quotation{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-file-alt me-2"></i>{% if form.instance.pk %}Edit{% else %}New{% endif %} Quotation</h1>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Quotation details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.quotation_number.id_for_label }}">{{ form.quotation_number.label }}</label>
+                    {{ form.quotation_number }}{% if form.quotation_number.errors %}<div class="invalid-feedback d-block">{{ form.quotation_number.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.customer.id_for_label }}">{{ form.customer.label }}</label>
+                    {{ form.customer }}{% if form.customer.errors %}<div class="invalid-feedback d-block">{{ form.customer.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+                    {{ form.status }}{% if form.status.errors %}<div class="invalid-feedback d-block">{{ form.status.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.quotation_date.id_for_label }}">{{ form.quotation_date.label }}</label>
+                    {{ form.quotation_date }}{% if form.quotation_date.errors %}<div class="invalid-feedback d-block">{{ form.quotation_date.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.valid_until.id_for_label }}">{{ form.valid_until.label }}</label>
+                    {{ form.valid_until }}{% if form.valid_until.errors %}<div class="invalid-feedback d-block">{{ form.valid_until.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.sales_person.id_for_label }}">{{ form.sales_person.label }}</label>
+                    {{ form.sales_person }}{% if form.sales_person.errors %}<div class="invalid-feedback d-block">{{ form.sales_person.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Financial</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.subtotal.id_for_label }}">{{ form.subtotal.label }}</label>
+                    {{ form.subtotal }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.discount_amount.id_for_label }}">{{ form.discount_amount.label }}</label>
+                    {{ form.discount_amount }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.tax_rate.id_for_label }}">{{ form.tax_rate.label }}</label>
+                    {{ form.tax_rate }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.tax_amount.id_for_label }}">{{ form.tax_amount.label }}</label>
+                    {{ form.tax_amount }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="{{ form.total_amount.id_for_label }}">{{ form.total_amount.label }}</label>
+                    {{ form.total_amount }}
+                </div>
+            </div>
+
+            <hr class="my-4">
+            <h5 class="text-muted text-uppercase small fw-semibold mb-3">Notes</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                    {{ form.notes }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.terms_conditions.id_for_label }}">{{ form.terms_conditions.label }}</label>
+                    {{ form.terms_conditions }}
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Save</button>
+                <a href="{% url 'sales:quotation_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

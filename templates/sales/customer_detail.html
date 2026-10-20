@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}{{ customer.name }}{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <h1><i class="fas fa-user me-2"></i>{{ customer.name }}</h1>
+    <div class="d-flex gap-2">
+        <a href="{% url 'sales:customer_update' customer.pk %}" class="btn btn-warning"><i class="fas fa-edit me-1"></i> Edit</a>
+        <a href="{% url 'sales:customer_delete' customer.pk %}" class="btn btn-danger"><i class="fas fa-trash me-1"></i> Delete</a>
+        <a href="{% url 'sales:customer_list' %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Customer Information</div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Type</dt><dd class="col-sm-8">{{ customer.get_customer_type_display }}</dd>
+                    <dt class="col-sm-4">Email</dt><dd class="col-sm-8">{{ customer.email }}</dd>
+                    <dt class="col-sm-4">Phone</dt><dd class="col-sm-8">{{ customer.phone }}</dd>
+                    <dt class="col-sm-4">Mobile</dt><dd class="col-sm-8">{{ customer.mobile|default:"—" }}</dd>
+                    <dt class="col-sm-4">Company</dt><dd class="col-sm-8">{{ customer.company_name|default:"—" }}</dd>
+                    <dt class="col-sm-4">Tax ID</dt><dd class="col-sm-8">{{ customer.tax_id|default:"—" }}</dd>
+                    <dt class="col-sm-4">Address</dt><dd class="col-sm-8">{{ customer.address }}, {{ customer.city }}{% if customer.state %}, {{ customer.state }}{% endif %} {{ customer.postal_code }}, {{ customer.country }}</dd>
+                    <dt class="col-sm-4">Credit limit</dt><dd class="col-sm-8">${{ customer.credit_limit|floatformat:2 }}</dd>
+                    <dt class="col-sm-4">Payment terms</dt><dd class="col-sm-8">{{ customer.payment_terms }} days</dd>
+                    <dt class="col-sm-4">Status</dt><dd class="col-sm-8">{% if customer.is_active %}Active{% else %}Inactive{% endif %}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Statistics</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="p-3 border rounded text-center">
+                            <div class="fs-4 fw-bold">{{ total_orders }}</div>
+                            <div class="small text-muted">Orders</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 border rounded text-center">
+                            <div class="fs-4 fw-bold">${{ total_spent|floatformat:2 }}</div>
+                            <div class="small text-muted">Total Spent</div>
+                        </div>
+                    </div>
+                </div>
+                {% if customer.notes %}
+                <hr>
+                <h6>Notes</h6>
+                <p class="mb-0">{{ customer.notes }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">Recent Orders</div>
+            <div class="card-body">
+                {% if orders %}
+                <ul class="list-group list-group-flush">
+                    {% for order in orders %}
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <a href="{% url 'sales:order_detail' order.pk %}">{{ order.order_number }}</a>
+                        <span>${{ order.total_amount|floatformat:2 }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted mb-0">No orders</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">Recent Quotations</div>
+            <div class="card-body">
+                {% if quotations %}
+                <ul class="list-group list-group-flush">
+                    {% for quote in quotations %}
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <a href="{% url 'sales:quotation_detail' quote.pk %}">{{ quote.quotation_number }}</a>
+                        <span>${{ quote.total_amount|floatformat:2 }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted mb-0">No quotations</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

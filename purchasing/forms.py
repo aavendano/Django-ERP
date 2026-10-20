@@ -6,24 +6,46 @@ from .models import (
 )
 
 
+def apply_bootstrap_classes(form):
+    """Add Bootstrap 5 form classes to all fields that do not already set one."""
+    for field in form.fields.values():
+        widget = field.widget
+        existing = widget.attrs.get('class', '')
+        if isinstance(widget, forms.CheckboxInput):
+            css = 'form-check-input'
+        elif isinstance(widget, (forms.Select, forms.SelectMultiple)):
+            css = 'form-select'
+        elif isinstance(widget, forms.FileInput):
+            css = 'form-control'
+        else:
+            css = 'form-control'
+        if css not in existing.split():
+            widget.attrs['class'] = f'{existing} {css}'.strip()
+
+
 class SupplierForm(forms.ModelForm):
     """Form for creating and updating suppliers."""
-    
+
     class Meta:
         model = Supplier
         fields = '__all__'
         widgets = {
             'address': forms.Textarea(attrs={'rows': 3}),
             'notes': forms.Textarea(attrs={'rows': 3}),
+            'is_preferred': forms.CheckboxInput(),
         }
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_bootstrap_classes(self)
+
     def clean_email(self):
         """Validate email uniqueness."""
         email = self.cleaned_data.get('email')
         if Supplier.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError('A supplier with this email already exists.')
         return email
-    
+
     def clean_credit_limit(self):
         """Validate credit limit is non-negative."""
         credit_limit = self.cleaned_data.get('credit_limit')
@@ -34,7 +56,7 @@ class SupplierForm(forms.ModelForm):
 
 class PurchaseRequisitionForm(forms.ModelForm):
     """Form for creating and updating purchase requisitions."""
-    
+
     class Meta:
         model = PurchaseRequisition
         fields = [
@@ -47,23 +69,27 @@ class PurchaseRequisitionForm(forms.ModelForm):
             'purpose': forms.Textarea(attrs={'rows': 3}),
             'notes': forms.Textarea(attrs={'rows': 3}),
         }
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_bootstrap_classes(self)
+
     def clean(self):
         """Validate dates."""
         cleaned_data = super().clean()
         requisition_date = cleaned_data.get('requisition_date')
         required_by_date = cleaned_data.get('required_by_date')
-        
+
         if requisition_date and required_by_date:
             if required_by_date < requisition_date:
                 raise forms.ValidationError('Required by date cannot be before requisition date.')
-        
+
         return cleaned_data
 
 
 class PurchaseOrderForm(forms.ModelForm):
     """Form for creating and updating purchase orders."""
-    
+
     class Meta:
         model = PurchaseOrder
         fields = [
@@ -79,23 +105,27 @@ class PurchaseOrderForm(forms.ModelForm):
             'supplier_notes': forms.Textarea(attrs={'rows': 3}),
             'terms_conditions': forms.Textarea(attrs={'rows': 4}),
         }
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_bootstrap_classes(self)
+
     def clean(self):
         """Validate dates."""
         cleaned_data = super().clean()
         po_date = cleaned_data.get('po_date')
         expected_delivery_date = cleaned_data.get('expected_delivery_date')
-        
+
         if po_date and expected_delivery_date:
             if expected_delivery_date < po_date:
                 raise forms.ValidationError('Expected delivery date cannot be before PO date.')
-        
+
         return cleaned_data
 
 
 class GoodsReceiptForm(forms.ModelForm):
     """Form for creating and updating goods receipts."""
-    
+
     class Meta:
         model = GoodsReceipt
         fields = [
@@ -107,10 +137,14 @@ class GoodsReceiptForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 3}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_bootstrap_classes(self)
+
 
 class RFQForm(forms.ModelForm):
     """Form for creating and updating RFQs."""
-    
+
     class Meta:
         model = RFQ
         fields = [
@@ -124,23 +158,27 @@ class RFQForm(forms.ModelForm):
             'terms_conditions': forms.Textarea(attrs={'rows': 4}),
             'notes': forms.Textarea(attrs={'rows': 3}),
         }
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_bootstrap_classes(self)
+
     def clean(self):
         """Validate dates."""
         cleaned_data = super().clean()
         rfq_date = cleaned_data.get('rfq_date')
         submission_deadline = cleaned_data.get('submission_deadline')
-        
+
         if rfq_date and submission_deadline:
             if submission_deadline < rfq_date:
                 raise forms.ValidationError('Submission deadline cannot be before RFQ date.')
-        
+
         return cleaned_data
 
 
 class SupplierQuotationForm(forms.ModelForm):
     """Form for creating and updating supplier quotations."""
-    
+
     class Meta:
         model = SupplierQuotation
         fields = [
@@ -153,19 +191,23 @@ class SupplierQuotationForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 3}),
             'evaluation_notes': forms.Textarea(attrs={'rows': 3}),
         }
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_bootstrap_classes(self)
+
     def clean(self):
         """Validate dates and scores."""
         cleaned_data = super().clean()
         quotation_date = cleaned_data.get('quotation_date')
         valid_until = cleaned_data.get('valid_until')
         evaluation_score = cleaned_data.get('evaluation_score')
-        
+
         if quotation_date and valid_until:
             if valid_until < quotation_date:
                 raise forms.ValidationError('Valid until date cannot be before quotation date.')
-        
+
         if evaluation_score and (evaluation_score < 0 or evaluation_score > 100):
             raise forms.ValidationError('Evaluation score must be between 0 and 100.')
-        
+
         return cleaned_data
