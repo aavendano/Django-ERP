@@ -16,17 +16,24 @@
     
     <style>
         :root {
-            --primary-color: #4F46E5;
+            --primary-color: #533278;
+            --brand-primary: #533278;
+            --brand-accent: #DD416E;
+            --brand-primary-hover: #43275F;
+            --brand-accent-hover: #BE2D57;
+            --brand-soft: #F4EDF8;
+            --brand-accent-soft: #FCEAF0;
+            --brand-gradient: linear-gradient(135deg, #533278 0%, #DD416E 100%);
             --secondary-color: #10B981;
             --danger-color: #EF4444;
             --warning-color: #F59E0B;
             --info-color: #3B82F6;
-            --dark-bg: #111827;
-            --sidebar-bg: #1F2937;
+            --dark-bg: #291B3B;
+            --sidebar-bg: #39254D;
             --text-light: #F9FAFB;
             --text-muted: #9CA3AF;
-            --border-color: #374151;
-            --hover-bg: #374151;
+            --border-color: #674B7C;
+            --hover-bg: #49315E;
             --card-bg: #ffffff;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -41,14 +48,14 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--brand-gradient);
             min-height: 100vh;
             color: #1F2937;
         }
 
         /* Navbar Styles */
         .navbar-custom {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--brand-gradient);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             padding: 1rem 2rem;
         }
@@ -217,7 +224,7 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--brand-gradient);
             color: white;
             font-weight: 600;
             border-radius: 0.75rem 0.75rem 0 0 !important;
@@ -233,13 +240,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--brand-gradient);
             border: none;
         }
 
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(83, 50, 120, 0.27);
         }
 
         .btn-success {
@@ -269,7 +276,7 @@
         }
 
         .table thead th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--brand-gradient);
             color: white;
             font-weight: 600;
             border: none;
@@ -312,7 +319,7 @@
 
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(83, 50, 120, 0.14);
         }
 
         /* Alerts */
@@ -346,7 +353,7 @@
         }
 
         .stat-icon.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--brand-gradient);
             color: white;
         }
 
@@ -364,6 +371,56 @@
             background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
             color: white;
         }
+
+        /* Brand palette mapped onto Bootstrap's component and utility tokens. */
+        :root {
+            --bs-primary: #533278;
+            --bs-primary-rgb: 83, 50, 120;
+            --bs-link-color: #533278;
+            --bs-link-color-rgb: 83, 50, 120;
+            --bs-link-hover-color: #43275F;
+            --bs-link-hover-color-rgb: 67, 39, 95;
+            --bs-focus-ring-color: rgba(83, 50, 120, 0.25);
+        }
+
+        .text-primary { color: var(--brand-primary) !important; }
+        .bg-primary { background-color: var(--brand-primary) !important; }
+        .border-primary { border-color: var(--brand-primary) !important; }
+        .btn-primary {
+            --bs-btn-color: #fff;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-active-color: #fff;
+            --bs-btn-focus-shadow-rgb: 83, 50, 120;
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+        }
+        .btn-primary:hover, .btn-primary:focus-visible, .btn-primary:active {
+            background: var(--brand-primary-hover);
+            border-color: var(--brand-primary-hover);
+        }
+        .btn-outline-primary {
+            --bs-btn-color: #533278;
+            --bs-btn-border-color: #533278;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #533278;
+            --bs-btn-hover-border-color: #533278;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #43275F;
+            --bs-btn-active-border-color: #43275F;
+            --bs-btn-focus-shadow-rgb: 83, 50, 120;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            border-left-color: var(--brand-accent);
+        }
+        .card-header { background: var(--brand-primary); }
+        .table thead th { background: var(--brand-primary); }
+        .stat-icon.primary { background: var(--brand-primary); }
+        .page-header { border-bottom-color: var(--brand-accent-soft); }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 0.2rem rgba(83, 50, 120, 0.14);
+        }
+        ::selection { background: var(--brand-accent-soft); color: var(--brand-primary); }
 
         /* Responsive */
         @media (max-width: 991px) {
