@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db.models import Q, Sum, F
 from decimal import Decimal
 
+from .forms import WarehouseForm
 from .models import Product, Category, Unit, Location, StockMovement, ProductLocation, Warehouse
 
 # Warehouse Views
@@ -12,6 +13,45 @@ class WarehouseListView(ListView):
     model = Warehouse
     template_name = 'inventory/warehouse_list.html'
     context_object_name = 'warehouses'
+
+    def get_queryset(self):
+        return Warehouse.objects.select_related('manager')
+
+
+class WarehouseDetailView(LoginRequiredMixin, DetailView):
+    model = Warehouse
+    template_name = 'inventory/warehouse_detail.html'
+    context_object_name = 'warehouse'
+
+
+class WarehouseCreateView(LoginRequiredMixin, CreateView):
+    model = Warehouse
+    form_class = WarehouseForm
+    template_name = 'inventory/warehouse_form.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Warehouse created successfully!')
+        return super().form_valid(form)
+
+
+class WarehouseUpdateView(LoginRequiredMixin, UpdateView):
+    model = Warehouse
+    form_class = WarehouseForm
+    template_name = 'inventory/warehouse_form.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Warehouse updated successfully!')
+        return super().form_valid(form)
+
+
+class WarehouseDeleteView(LoginRequiredMixin, DeleteView):
+    model = Warehouse
+    template_name = 'inventory/warehouse_confirm_delete.html'
+    success_url = reverse_lazy('inventory:warehouse_list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Warehouse deleted successfully!')
+        return super().delete(request, *args, **kwargs)
     
 # Product Views
 class ProductListView(LoginRequiredMixin, ListView):

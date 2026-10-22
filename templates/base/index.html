@@ -10,85 +10,7 @@
         <p class="text-muted">Welcome back, {{ user.get_full_name|default:user.username }}!</p>
     </div>
 
-    <!-- Main Stats -->
-    <div class="row">
-        <!-- CRM Stats -->
-        <div class="col-md-3">
-            <div class="card stat-card primary">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 class="mb-0">{{ stats.total_leads|default:0 }}</h3>
-                            <p class="text-muted mb-0 small">Total Leads</p>
-                        </div>
-                        <div class="text-primary">
-                            <i class="fas fa-user-plus fa-2x"></i>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{% url 'crm:lead_list' %}" class="btn btn-sm btn-outline-primary w-100">View Leads</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card stat-card success">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 class="mb-0">{{ stats.total_contacts|default:0 }}</h3>
-                            <p class="text-muted mb-0 small">Total Contacts</p>
-                        </div>
-                        <div class="text-success">
-                            <i class="fas fa-address-book fa-2x"></i>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{% url 'crm:contact_list' %}" class="btn btn-sm btn-outline-success w-100">View Contacts</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card stat-card warning">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 class="mb-0">{{ stats.total_opportunities|default:0 }}</h3>
-                            <p class="text-muted mb-0 small">Opportunities</p>
-                        </div>
-                        <div class="text-warning">
-                            <i class="fas fa-handshake fa-2x"></i>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{% url 'crm:opportunity_list' %}" class="btn btn-sm btn-outline-warning w-100">View Opportunities</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card stat-card info">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 class="mb-0">{{ stats.total_activities|default:0 }}</h3>
-                            <p class="text-muted mb-0 small">Activities</p>
-                        </div>
-                        <div class="text-info">
-                            <i class="fas fa-tasks fa-2x"></i>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{% url 'crm:activity_list' %}" class="btn btn-sm btn-outline-info w-100">View Activities</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {# CRM stats — desactivado en producción #}
 
     <!-- Inventory Stats -->
     <div class="row">
@@ -208,18 +130,6 @@
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-6">
-                            <a href="{% url 'crm:lead_create' %}" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-user-plus"></i><br>
-                                <span class="small">New Lead</span>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{% url 'crm:contact_create' %}" class="btn btn-outline-success w-100">
-                                <i class="fas fa-address-book"></i><br>
-                                <span class="small">New Contact</span>
-                            </a>
-                        </div>
                         <div class="col-6">
                             <a href="{% url 'inventory:product_create' %}" class="btn btn-outline-info w-100">
                                 <i class="fas fa-box"></i><br>

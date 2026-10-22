@@ -8,7 +8,7 @@
     </h1>
 </div>
 
-<div class="card">
+<div class="card erp-form-shell">
     <div class="card-body">
         <form method="post" novalidate>
             {% csrf_token %}
@@ -166,7 +166,7 @@
                 </div>
             </div>
 
-            <div class="d-flex gap-2 pt-2">
+            <div class="erp-form-actions">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Save</button>
                 <a href="{% url 'purchasing:supplier_list' %}" class="btn btn-secondary"><i class="fas fa-times me-1"></i> Cancel</a>
             </div>

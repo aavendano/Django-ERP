@@ -1,17 +1,18 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load form_tags %}
 {% block title %}{{ action }} department{% endblock %}
 {% block content %}
-<div class="container-fluid">
-    <h1 class="h3 mb-4">{{ action }} department</h1>
-    <div class="card border-0 shadow-sm">
-        <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Save</button>
-                <a href="{% url 'hr:department_list' %}" class="btn btn-secondary"><i class="fas fa-times me-1"></i>Cancel</a>
-            </form>
-        </div>
+<div class="page-header">
+    <h1>{{ action }} department</h1>
+</div>
+
+<div class="card erp-form-shell">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% url 'hr:department_list' as cancel_url %}
+            {% render_form form cancel_url=cancel_url %}
+        </form>
     </div>
 </div>
 {% endblock %}

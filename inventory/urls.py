@@ -16,6 +16,10 @@ urlpatterns = [
     
     # Warehouses URLs
     path('warehouses/', views.WarehouseListView.as_view(), name='warehouse_list'),
+    path('warehouses/create/', views.WarehouseCreateView.as_view(), name='warehouse_create'),
+    path('warehouses/<int:pk>/', views.WarehouseDetailView.as_view(), name='warehouse_detail'),
+    path('warehouses/<int:pk>/edit/', views.WarehouseUpdateView.as_view(), name='warehouse_update'),
+    path('warehouses/<int:pk>/delete/', views.WarehouseDeleteView.as_view(), name='warehouse_delete'),
     
     # Category URLs
     path('categories/', views.CategoryListView.as_view(), name='category_list'),

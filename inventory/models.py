@@ -33,11 +33,37 @@ class Category(models.Model):
         return reverse('inventory:category_detail', kwargs={'pk': self.pk})
 
 class Warehouse(models.Model):
+    """Storage warehouse."""
     name = models.CharField(max_length=100)
-    location = models.CharField(max_length=255)
+    code = models.CharField(max_length=50, unique=True)
+    description = models.TextField(blank=True)
+    location = models.CharField(max_length=255, blank=True, default='')
+    address = models.TextField(blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    manager = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='managed_warehouses',
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Warehouse'
+        verbose_name_plural = 'Warehouses'
+        ordering = ['name']
 
     def __str__(self):
+        if self.code:
+            return f"{self.code} - {self.name}"
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('inventory:warehouse_detail', kwargs={'pk': self.pk})
         
 class Unit(models.Model):
     """Unit of Measurement"""

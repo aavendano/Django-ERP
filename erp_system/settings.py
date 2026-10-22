@@ -44,11 +44,11 @@ INSTALLED_APPS = [
     # Local apps
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
-    'crm.apps.CrmConfig',
+    # 'crm.apps.CrmConfig',  # desactivado en producción
     'inventory.apps.InventoryConfig',
-    'financial',
-    'fiscal',
-    'sales',
+    # 'financial',  # desactivado en producción
+    # 'fiscal',  # desactivado en producción
+    # 'sales',  # desactivado en producción
     'purchasing',
     'hr',
     'logistics',

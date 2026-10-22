@@ -248,6 +248,14 @@
             box-shadow: var(--shadow-lg);
         }
 
+        /* Form cards stay still so fields do not jump under the cursor. */
+        .erp-form-shell:hover,
+        .erp-form-shell .card:hover,
+        .card:has(form):hover {
+            transform: none;
+            box-shadow: var(--shadow-md);
+        }
+
         .card-header {
             background: var(--brand-gradient);
             color: white;
@@ -348,6 +356,7 @@
 
         /* Forms */
         .form-label {
+            display: block;
             font-weight: 500;
             color: #374151;
             margin-bottom: 0.25rem;
@@ -355,7 +364,112 @@
         }
 
         .form-text {
+            display: block;
+            margin-top: 0.2rem;
             font-size: 0.75rem;
+        }
+
+        /* Readable form width shared by manual and render_form layouts. */
+        .erp-form-shell,
+        .content-wrapper > .card:has(> .card-body > form),
+        .content-wrapper .container-fluid > .card:has(> .card-body > form),
+        .content-wrapper .row > [class*="col"] > .card:has(> .card-body > form) {
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .erp-form-shell .card-body,
+        .content-wrapper .card:has(form) > .card-body {
+            padding: 1.25rem 1.35rem;
+        }
+
+        .erp-form-field {
+            margin-bottom: 0;
+        }
+
+        .erp-form-field .form-control,
+        .erp-form-field .form-select,
+        .content-wrapper form .form-control,
+        .content-wrapper form .form-select,
+        .content-wrapper form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="submit"]):not([type="button"]),
+        .content-wrapper form select,
+        .content-wrapper form textarea {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .content-wrapper form textarea {
+            min-height: 5.5rem;
+            resize: vertical;
+        }
+
+        /* Django form.as_p fallback until templates use render_form. */
+        .content-wrapper form p {
+            margin-bottom: 0.85rem;
+        }
+
+        .content-wrapper form p > label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .content-wrapper form p > input:not([type="checkbox"]):not([type="radio"]),
+        .content-wrapper form p > select,
+        .content-wrapper form p > textarea {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.35rem;
+            padding: 0.35rem 0.6rem;
+            font-size: 0.875rem;
+            min-height: calc(1.5em + 0.7rem + 2px);
+            background-color: #fff;
+        }
+
+        .content-wrapper form p > input[type="checkbox"],
+        .content-wrapper form p > input[type="radio"] {
+            width: auto;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+        }
+
+        .content-wrapper form .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            min-height: calc(1.5em + 0.7rem + 2px);
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .content-wrapper form .form-check .form-check-input {
+            float: none;
+            margin-left: 0;
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+
+        .content-wrapper form .form-check-label {
+            margin-bottom: 0;
+        }
+
+        .erp-form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .invalid-feedback.d-block {
+            margin-top: 0.2rem;
         }
 
         /* Compact spacing utilities */
@@ -589,6 +703,7 @@
         </ul>
     </div>
 
+    {% comment %} CRM / Sales / Financial / Fiscal — desactivados en producción
     <!-- CRM -->
     <div class="sidebar-section">
         <div class="sidebar-title">CRM</div>
@@ -755,6 +870,7 @@
         </li>
     </ul>
 </div>
+    {% endcomment %}
 
     <!-- Purchasing -->
     <div class="sidebar-section">

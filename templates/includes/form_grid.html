@@ -1,0 +1,49 @@
+{% if form.non_field_errors %}
+<div class="alert alert-danger">
+    {{ form.non_field_errors }}
+</div>
+{% endif %}
+
+<div class="row g-3 mb-2">
+    {% for item in fields %}
+    <div class="{{ item.column_class }} erp-form-field">
+        {% if item.is_checkbox %}
+        <div class="form-check">
+            {{ item.field }}
+            <label class="form-check-label" for="{{ item.field.id_for_label }}">
+                {{ item.field.label }}
+                {% if item.field.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+        </div>
+        {% else %}
+        <label class="form-label" for="{{ item.field.id_for_label }}">
+            {{ item.field.label }}
+            {% if item.field.field.required %}<span class="text-danger">*</span>{% endif %}
+        </label>
+        {{ item.field }}
+        {% endif %}
+
+        {% if item.field.help_text %}
+        <div class="form-text">{{ item.field.help_text }}</div>
+        {% endif %}
+        {% if item.field.errors %}
+        <div class="invalid-feedback d-block">{{ item.field.errors }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
+
+<div class="erp-form-actions">
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save me-1"></i> {{ submit_label }}
+    </button>
+    {% if cancel_url %}
+    <a href="{{ cancel_url }}" class="btn btn-secondary">
+        <i class="fas fa-times me-1"></i> {{ cancel_label }}
+    </a>
+    {% endif %}
+</div>

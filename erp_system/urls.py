@@ -7,11 +7,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('base.urls')),
     path('users/', include('users.urls')),
-    path('crm/', include('crm.urls')),
+    # path('crm/', include('crm.urls')),  # desactivado en producción
     path('inventory/', include('inventory.urls')),
-    path('financial/', include('financial.urls')),
-    path('fiscal/', include('fiscal.urls')),
-    path('sales/', include('sales.urls')),
+    # path('financial/', include('financial.urls')),  # desactivado en producción
+    # path('fiscal/', include('fiscal.urls')),  # desactivado en producción
+    # path('sales/', include('sales.urls')),  # desactivado en producción
     path('purchasing/', include('purchasing.urls')),
     path('hr/', include('hr.urls')),
     path('logistics/', include('logistics.urls')),
