@@ -14,50 +14,14 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design system (shared tokens + primitives) -->
+    <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
     
     <style>
-        :root {
-            --primary-color: #533278;
-            --brand-primary: #533278;
-            --brand-accent: #DD416E;
-            --brand-primary-hover: #43275F;
-            --brand-accent-hover: #BE2D57;
-            --brand-soft: #F4EDF8;
-            --brand-accent-soft: #FCEAF0;
-            --brand-gradient: linear-gradient(135deg, #533278 0%, #DD416E 100%);
-            --secondary-color: #10B981;
-            --danger-color: #EF4444;
-            --warning-color: #F59E0B;
-            --info-color: #3B82F6;
-            --dark-bg: #291B3B;
-            --sidebar-bg: #E2E2E2;
-            --sidebar-text: #1F2937;
-            --sidebar-text-muted: #6B7280;
-            --sidebar-border: #E5E7EB;
-            --sidebar-hover-bg: #E5E7EB;
-            --sidebar-active-bg: #EDE9F3;
-            --text-light: #F9FAFB;
-            --text-muted: #9CA3AF;
-            --border-color: #674B7C;
-            --hover-bg: #49315E;
-            --card-bg: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Roboto Condensed', 'Roboto Condensed Regular', sans-serif;
-            font-weight: 400;
             background: var(--brand-gradient);
             min-height: 100vh;
-            color: #1F2937;
         }
 
         /* Navbar Styles */
@@ -904,7 +868,7 @@
 
     <!-- Purchasing -->
     <div class="sidebar-section">
-        <div class="sidebar-title">Purchasing & Procurement</div>
+        <div class="sidebar-title">Purchasing</div>
         <ul class="sidebar-menu">
             <li>
                 <a href="{% url 'purchasing:dashboard' %}">
@@ -978,7 +942,7 @@
 
     <!-- Logistics -->
     <div class="sidebar-section">
-        <div class="sidebar-title">Logistics & Supply Chain</div>
+        <div class="sidebar-title">Transport/ Dispatch</div>
         <ul class="sidebar-menu">
             <li>
                 <a href="{% url 'logistics:dashboard' %}">
@@ -1025,6 +989,7 @@
         </ul>
     </div>
 
+    {% comment %} HR / Projects — ocultos en sidebar
     <!-- Human Resources -->
     <div class="sidebar-section">
         <div class="sidebar-title">Human Resources</div>
@@ -1104,10 +1069,11 @@
             </li>
         </ul>
     </div>
+    {% endcomment %}
 
     <!-- Quality Management -->
     <div class="sidebar-section">
-        <div class="sidebar-title">Quality Management</div>
+        <div class="sidebar-title">Quality Control</div>
         <ul class="sidebar-menu">
             <li>
                 <a href="{% url 'quality:dashboard' %}">
@@ -1138,7 +1104,7 @@
 
     <!-- Maintenance & Asset Management -->
     <div class="sidebar-section">
-        <div class="sidebar-title">Maintenance & Assets</div>
+        <div class="sidebar-title">Maintenance</div>
         <ul class="sidebar-menu">
             <li>
                 <a href="{% url 'maintenance:dashboard' %}">
@@ -1175,7 +1141,7 @@
 
     <!-- Business Intelligence & Reporting -->
     <div class="sidebar-section">
-        <div class="sidebar-title">BI & Analytics</div>
+        <div class="sidebar-title">Analytics</div>
         <ul class="sidebar-menu">
             <li>
                 <a href="{% url 'bi_reporting:analytics_dashboard' %}">

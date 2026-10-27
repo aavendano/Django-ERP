@@ -1,0 +1,90 @@
+/**
+ * Django-ERP design system — KV Custom Windows + Doors
+ * Shared tokens and primitives for all pages (app shell + auth).
+ */
+
+:root {
+    --primary-color: #533278;
+    --brand-primary: #533278;
+    --brand-accent: #DD416E;
+    --brand-primary-hover: #43275F;
+    --brand-accent-hover: #BE2D57;
+    --brand-soft: #F4EDF8;
+    --brand-accent-soft: #FCEAF0;
+    --brand-gradient: linear-gradient(135deg, #533278 0%, #DD416E 100%);
+    --secondary-color: #10B981;
+    --danger-color: #EF4444;
+    --warning-color: #F59E0B;
+    --info-color: #3B82F6;
+    --dark-bg: #291B3B;
+    --sidebar-bg: #E2E2E2;
+    --sidebar-text: #1F2937;
+    --sidebar-text-muted: #6B7280;
+    --sidebar-border: #E5E7EB;
+    --sidebar-hover-bg: #E5E7EB;
+    --sidebar-active-bg: #EDE9F3;
+    --text-light: #F9FAFB;
+    --text-muted: #9CA3AF;
+    --text-body: #1F2937;
+    --border-color: #674B7C;
+    --hover-bg: #49315E;
+    --card-bg: #ffffff;
+    --surface-muted: #F9FAFB;
+    --border-subtle: #E5E7EB;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 60px rgba(41, 27, 59, 0.28);
+    --radius-sm: 0.35rem;
+    --radius-md: 0.625rem;
+    --radius-lg: 1.25rem;
+    --font-sans: 'Roboto Condensed', 'Roboto Condensed Regular', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--text-body);
+}
+
+/* Brand utilities */
+.text-primary { color: var(--brand-primary) !important; }
+.bg-primary { background-color: var(--brand-primary) !important; }
+.border-primary { border-color: var(--brand-primary) !important; }
+
+.btn-brand {
+    background: var(--brand-gradient);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-brand:hover,
+.btn-brand:focus {
+    opacity: 0.94;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-brand:active {
+    transform: translateY(0);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(83, 50, 120, 0.15);
+}
+
+::selection {
+    background: var(--brand-accent-soft);
+    color: var(--brand-primary);
+}
