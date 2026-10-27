@@ -152,6 +152,36 @@
             letter-spacing: 0.04em;
             padding: 0.35rem 1rem;
             margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .sidebar-title:hover {
+            color: var(--brand-primary);
+            background: var(--sidebar-hover-bg);
+        }
+
+        .sidebar-title::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.65rem;
+            color: inherit;
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar-section.collapsed .sidebar-title::after {
+            transform: rotate(-90deg);
+        }
+
+        .sidebar-section.collapsed .sidebar-menu {
+            display: none;
         }
 
         .sidebar-menu {
@@ -1238,14 +1268,46 @@
     
     <!-- Custom JS -->
     <script>
-        // Highlight active menu item
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
             const menuLinks = document.querySelectorAll('.sidebar-menu a');
-            
-            menuLinks.forEach(link => {
+            const sections = document.querySelectorAll('.sidebar-section');
+
+            sections.forEach(function(section) {
+                section.classList.add('collapsed');
+                const title = section.querySelector('.sidebar-title');
+                if (!title) {
+                    return;
+                }
+                title.setAttribute('role', 'button');
+                title.setAttribute('tabindex', '0');
+                title.setAttribute('aria-expanded', 'false');
+
+                function toggleSection() {
+                    const isCollapsed = section.classList.toggle('collapsed');
+                    title.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+                }
+
+                title.addEventListener('click', toggleSection);
+                title.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        toggleSection();
+                    }
+                });
+            });
+
+            menuLinks.forEach(function(link) {
                 if (link.getAttribute('href') === currentPath) {
                     link.classList.add('active');
+                    const section = link.closest('.sidebar-section');
+                    if (section) {
+                        section.classList.remove('collapsed');
+                        const title = section.querySelector('.sidebar-title');
+                        if (title) {
+                            title.setAttribute('aria-expanded', 'true');
+                        }
+                    }
                 }
             });
         });
