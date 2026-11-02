@@ -63,3 +63,4 @@ celerybeat.pid
 *.pid
 db.sqlite3
 
+db.sqlite3
